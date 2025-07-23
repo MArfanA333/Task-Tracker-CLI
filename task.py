@@ -1,13 +1,12 @@
 import datetime
-import enum
+from enum import Enum
 
-class Status(enum):
+class Status(Enum):
     PENDING = "Pending"
     IN_PROGRESS = "In Progress"
     DONE = "Done"
 
 class Task:
-    SEPARATOR = "-----------------------------------------\n"
     
     def __init__(self, task_id, description):
         
@@ -44,8 +43,9 @@ class Task:
         description = data["description"]
         status = Status(data["status"])
         
-        task = cls(task_id,description,status)
+        task = cls(task_id,description)
+        task.status = Status(data["status"])
         task.created_at = datetime.datetime.fromisoformat(data["created_at"])
-        task.updated_at = data["updated_at"]
+        task.updated_at = datetime.datetime.fromisoformat(data["updated_at"])
         
         return task
